@@ -1,0 +1,6 @@
+name: Spleef
+version: '${project.version}'
+main: ru.minecraft.skyscx.Skyscx
+prefix: SP
+authors: [ Skyscx ]
+description: Spleef for 1.12.2
