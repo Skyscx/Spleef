@@ -11,7 +11,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
+import ru.minecraft.skyscx.Game.messages
 import ru.minecraft.skyscx.Skyscx
 import java.lang.Double.max
 import java.lang.Double.min
@@ -44,7 +44,8 @@ class Arena (nameA: String, val locSnow1: Location, val locSnow2: Location) : Li
         for ((i, player) in PlayersInGame.withIndex()){
             player?.teleport(SpawnLocation[i])
             player?.gameMode = GameMode.SURVIVAL
-            sendArenaTitle("§eИгра начата!","" )
+            player?.sendMessage(messages.Start)
+            sendArenaTitle("§eИгра началась!","§сУдачи!" )
             player?.inventory?.clear()
             val item = ItemStack(Material.DIAMOND_SPADE)
             item.addEnchantment(Enchantment.DIG_SPEED, 5)
@@ -67,6 +68,7 @@ class Arena (nameA: String, val locSnow1: Location, val locSnow2: Location) : Li
     fun CheckGame() : Boolean{
         if (PlayersInGame.size == 1) {
             playerWin(PlayersInGame[0])
+
             return true
         }
         return false
@@ -115,7 +117,11 @@ class Arena (nameA: String, val locSnow1: Location, val locSnow2: Location) : Li
 
         for (x in X1.toInt() until X2.toInt()+1){
             for (z in Z1.toInt() until Z2.toInt()+1){
-                Location(Bukkit.getWorld("world"), x.toDouble(), locSnow1.y, z.toDouble()).block.type = Material.SNOW_BLOCK
+
+                if (Location(Bukkit.getWorld("world"), x.toDouble(), locSnow1.y, z.toDouble()).block.type === Material.AIR){
+                    Location(Bukkit.getWorld("world"), x.toDouble(), locSnow1.y, z.toDouble()).block.type = Material.SNOW_BLOCK
+                }
+
             }
         }
     }
@@ -130,6 +136,10 @@ class Arena (nameA: String, val locSnow1: Location, val locSnow2: Location) : Li
     }
     @EventHandler
     fun playerBreakBlock(event: BlockBreakEvent){
+        val player = event.player
+        if(player.isOp){
+            return
+        }
         if (event.block.type == Material.SNOW_BLOCK){
             event.isCancelled = true
             event.block.type = Material.AIR

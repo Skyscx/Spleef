@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
+import ru.minecraft.skyscx.Game.messages
 import ru.minecraft.skyscx.Skyscx
 
 object EVENTS : Listener{
@@ -21,10 +22,10 @@ object EVENTS : Listener{
         if (event.item?.type != Material.SNOW_BALL) return
 
         if (Skyscx.instance?.system?.turn?.hasPlayerInTurn(event.player) == false){
-            event.player.sendMessage("Вы встали в очередь.")
-            Skyscx.instance?.system?.addPlayerInTurn(event.player, 2) // НЕ РАБОТАЕТ
+            event.player.sendMessage(messages.Turn2)
+            Skyscx.instance?.system?.addPlayerInTurn(event.player, 2)
         }else{
-            event.player.sendMessage("Вы уже стоите в очереди.")
+            event.player.sendMessage(messages.Turn1)
         }
     }
     @EventHandler

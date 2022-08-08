@@ -15,7 +15,6 @@ class SYSTEM {
     fun addPlayerInTurn(_player: Player, _count: Int = 2) {
         turn.addPlayerTurn(_player, _count)
         Bukkit.getConsoleSender().sendMessage("Player ${_player.name} add in turn")
-
         checkStartArena(_count)
     }
 
